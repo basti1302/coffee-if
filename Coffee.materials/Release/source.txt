@@ -1,0 +1,723 @@
+"Coffee" by Bastian Krol
+
+[The story headline is "A small piece of interactive fiction".]
+The story headline is "The nonofficial XYZ project game".
+The story genre is "Slice of Life".
+The story description is "The hardships of working from home: How difficult can it be to get to your desk and start to be productive?".
+The story creation year is 2012.
+Release along with an interpreter.
+Release along with cover art.
+[TODO Cover art copyright by Moyan Brenn. Go to http://www.flickr.com/aigle_dore to see more of his work.]
+Release along with the private source text.
+
+Include Basic Screen Effects by Emily Short.
+Include Basic Help Menu by Emily Short.
+Include Hiding Under by Eric Eve.
+Include Plugs and Sockets by Sean Turner. 
+[Include Simple Unit Tests by Dannii Willis.]
+
+Construction stage shortcut is a truth state that varies. 
+
+Chapter Zero - Construction Stage Shortcut - Not for release
+
+[Toggle true/false to deactivate/activate the construction stage. The released version will always use false.]
+
+Construction stage shortcut is true.
+
+
+Chapter I - Construction
+
+Section I/1 - Definitions For Construction Stage
+
+City is a kind of value. The cities are Monheim, Berlin and city_unknown. Understand "M" as Monheim. Understand "B" as Berlin. 
+
+Profession is a kind of value. The professions are Developer, Product Owner, Test Expert and profession_unknown. Understand "D" as Developer.  Understand "P" or "PO" as Product Owner. Understand "T" or "TE" as Test Expert.
+
+Os is a kind of value. The oses are Linux, Mac, Windows and os_unknown. Understand "L" as Linux. Understand "M" as Mac. Understand "W" as Windows.
+
+A person has a city. The city of the player is city_unknown. 
+A person has a profession. The profession of the player is profession_unknown. 
+A person has an os. The os of the player is os_unknown.
+
+Instead of examining the player when the city of the player is Monheim:
+	say "You're a [profession of the player], one of the smart guys from team 1, from Monheim Downtown Central. Good looking as ever. By the way, your preferred operating system is [os of the player]."
+	
+Instead of examining the player when the city of the player is Berlin:
+    say "You're a [profession of the player], one of the cool hipsters from team 2, from Berlin. Good looking as ever. By the way, your preferred operating system is [os of the player]."
+
+To begin the main game:
+	now the construction stage is 4;
+	say paragraph break;
+	now the command prompt is ">";
+	say "The shrill beep of the alarm clock wakes you up from a beautiful dream you can only vaguely remember. You barely manage to hit the button to switch the alarm off, groaning. You are extremely tired. You knew you had to pay the price when you went to bed that late yesterday evening, and you also knew that you had to get up early today because there is a lot of work to do.";
+	say line break;
+	if the profession of the player is Developer and the city of the player is Monheim:
+		say "You still need to finish task XYZ-666 and today is the last day of the sprint.";
+	if the profession of the player is Developer and the city of the player is Berlin:
+		say "You still need to finish task ZYX-666 and today is the last day of the sprint.";
+	if the profession of the player is Product Owner and the city of the player is Monheim:
+		say "You still need to write the PVD user stories for the next sprint and the planning meeting is tomorrow.";
+	if the profession of the player is Product Owner and the city of the player is Berlin:
+		say "You still need to write the ACM user stories for the next sprint and the planning meeting is tomorrow.";
+	if the profession of the player is Test Expert:
+		say "You still need to test a dozen issues or more thoroughly and the appointment with TÜV IT is on the day after tomorrow.";
+	say line break;
+	say "Well, anyway. You will be working from home today and all you have to do is getting to your desk in your home office room and start being productive.";
+	say line break;
+	now the player is on the bed;
+	say "(If you are new to interactive fiction, you might want to type 'help' now to learn the basics of this type of game.)".
+
+To reject the answer:
+	say "Before doing anything else, you'll have to answer these questions. I'm sorry, but it's either that or playing Minesweeper. Now be a good boy and simply type one of the provided answers. The first letter is usually enough, if you are lazy.";
+	
+Section I/2 - Construction Stage
+
+Getting Started is a room. The player is in Getting Started.
+
+The construction stage is a number that varies. The construction stage is 1.
+
+When play begins:
+	if construction stage shortcut is true:
+		now the city of the player is Monheim;
+		now the profession of the player is Developer;
+		now the os of the player is Linux;
+		begin the main game;
+	otherwise:
+		now the command prompt is "Monheim or Berlin? ". 
+
+After reading a command when the construction stage is 1:
+	if the player's command includes "[city]":
+		now the city of the player is the city understood;
+		say "[line break]Thanks.";
+		now the construction stage is 2;
+		now the command prompt is "Developer, Product Owner or Test Expert? ";
+		reject the player's command;
+	otherwise:
+		reject the answer;
+		reject the player's command.
+		
+After reading a command when the construction stage is 2:
+	if the player's command includes "[profession]":
+		now the profession of the player is the profession understood;
+		say "[line break]Thanks.";
+		now the construction stage is 3;
+		now the command prompt is "Linux, Mac or Windows? ";
+		reject the player's command;
+	otherwise:
+		reject the answer;
+		reject the player's command.
+		
+After reading a command when the construction stage is 3:
+	if the player's command includes "[os]":
+		now the os of the player is the os understood;
+		say "[line break]Thank you very much, now we begin...";
+		begin the main game;
+		reject the player's command;
+	otherwise:
+		reject the answer;
+		reject the player's command.
+
+
+Chapter II - General Rules
+
+Section II/1 - Misc Rules
+
+The maximum score is 19.
+
+A window is a kind of thing.
+Instead of opening a window:
+	say "Rather not. It's probably -15° C outside."
+
+Instead of sleeping:
+	if the player is on the bed or the player is on the sofa:
+		say "Yes, very tempting idea. But you need to get some work done.";
+	otherwise:
+		say "While standing?"
+
+Section II/2 - Electricity
+
+A power-plug-kind is a kind of PS-plug. The type of a power-plug-kind is "power".
+
+Does the player mean doing anything to a power-plug-kind: It is very unlikely.
+
+A power-socket-kind is a kind of PS-socket. The type of a power-socket-kind is "power".
+
+A power cord is a kind of thing.
+
+An electric device is a kind of container. [Why a container? Because two of them, toaster and coffee machine can have put things into them.] Every electric device incorporates a power-plug-kind. Every electric device incorporates a power cord.
+
+Instead of plugging a power cord into something:
+	repeat with parent running through the electric devices which incorporate the noun:
+		try plugging parent into the second noun.
+
+A power source is a kind of thing.
+A wall-outlet-kind is a kind of power source. A wall-outlet-kind is fixed in place. Every wall-outlet-kind incorporates a power-socket-kind.
+A double-wall-outlet-kind is a kind of power source. A double-wall-outlet-kind is fixed in place. Every double-wall-outlet-kind incorporates two power-socket-kinds.
+
+To decide if the (item - a thing) is powered:
+	repeat with plug running through the PS-plugs which are part of the item:
+		if the attachment of the plug is not nothing:
+			decide yes;
+	decide no.
+
+Section II/3 - Making Coffee
+
+has-made-mess is a truth state that varies.
+
+Instead of inserting something that is not the cup into the coffee machine: 
+	say "That would achieve nothing."
+
+The coffee machine's button is part of the coffee machine.
+
+Instead of pushing the coffee machine's button:
+	unless the coffee machine is powered:
+		say "You push the button, but nothing happens. You notice that the display is unlit. Obviously the coffee machine has no power.";
+	otherwise:
+		say "The coffee machine emits a short, happy beep and begins its usual cacaphony off grinding and brewing noises.";
+		unless the cup is in the coffee machine:
+			say "A little later, a stream of hot, black coffee flows directly into the drip tray, where your cup should have been. It also spills on the kitchen counter. What a mess!";
+			now has-made-mess is true;
+		otherwise:
+			if the cup is full:
+				say "A little later, a stream of hot, black coffee flows into the cup, which had been full of coffee already. The coffee starts to flow over as more coffee pours into the cup, spilling all over the kitchen counter. What a mess!";
+				now has-made-mess is true;
+			otherwise:
+				say "A little later, a stream of hot, black coffee flows into the cup. The crema on top just looks delicious.";
+				now the cup is full.
+
+[
+TODO More stuff for an even more intricate make-coffee-puzzle:
+
+  - push button #1
+    The coffee machine emits a low, sad beep. x display: "COF. BEANS[linebreak]EMPTY"
+  - Find beans in cupboard
+  - Put beans in coffee machine
+  - push button #2
+    The coffee machine emits a low, sad beep. x display: "WATERTANK[linebreak]EMPTY"
+  - how to get water into the cm?
+    Either
+    - find a cup (on table), put cup in sink, turn on water tap, turn off water tap, get cup, pour water from cup into cm/watertank, do that 3 times
+    - get watertank from cm, put watertank in sink, turn on tap, turn off tap, get tank put tank into cm
+    - push button #3:
+      If cup is in machine:
+      The coffee machine emits a low, sad beep, the display shortly flashes a message which you can't read fully, but you think read something about bringing the machine to you dealer for service. Before you can fully read it, the message disappears again, as if by magic. The coffee machine emits a short, happy beep and begins its usual cacaphony off grinding and brewing noises. A little later, your coffee is ready.
+      If cup is not in machine:
+      Same text, except for last sentence. Replace by: A little later, a stream of hot black coffee flows directly into the drip tray, where your cup should have been.
+]
+
+Section II/4 - Caffeine Intake
+
+Sufficient caffeine saturation is a truth state that varies. Sufficient caffeine saturation is false.
+The coffee counter is a number that varies. The coffee counter is 0.
+
+The cup is a thing.
+Understand "coffee" as cup.
+The cup is either full or empty.
+The cup is empty.
+The description of the cup is "The cup you usually use for your morning coffee[if the cup is full]. There is some steaming black coffee in it[otherwise]. To your disappointment, it is empty[end if]."
+The printed name of the cup is "[if the cup is full]cup of coffee[otherwise]cup[end if]"
+
+coffeedrinking is an action applying to nothing.
+
+Before drinking the cup:
+	try coffeedrinking instead.
+
+Check coffeedrinking:
+	if the cup is empty:
+		say "You sip a bit of thin air from the empty cup." instead;
+	if coffee counter is 3:
+		say "No, really, you had enough coffee for now. Too much caffeine ain't good for you." instead.
+
+Carry out coffeedrinking:
+	increment the coffee counter;
+	now sufficient caffeine saturation is true;
+	now the cup is empty;
+	if the coffee counter is 1:
+		if has-made-mess is true:
+			increase the score by 2;
+		otherwise:
+			increase the score by 3.
+
+Report coffeedrinking:
+	if coffee counter is 0:
+		[This should never happen]
+		say "Oh, weird! This shouldn't have happened. Can you do that again, please.";
+	otherwise if coffee counter is 1:
+		say "Ahh. That was badly needed.";
+		say "You notice that you are a little hungry. Breakfast would be nice.";
+	otherwise if coffee counter is 2:
+		say "Very tasty, indeed.";
+	otherwise if coffee counter is 3:
+		say "Mmh. Good. But I think three cups are enough for the morning, don't you think.";
+	otherwise:
+		[This should never happen]
+		say "You have a bad feeling in your stomach. I think you had to much coffee already.";
+				
+Section II/5 - Making Breakfast
+
+Breakfast state is a truth state that varies. Breakfast state is false.
+Toast already eaten is a number  that varies.
+
+Toast-kind is a kind of thing.
+Toast-kind is edible.
+An untoasted piece of toast is a kind of toast-kind. The plural of untoasted piece of toast is untoasted pieces of toast. 
+A toasted piece of toast is a kind of toast-kind. The plural of toasted piece of toast is toasted pieces of toast.
+A charred piece of toast is a kind of toast-kind. The plural of charred piece of toast is charred pieces of toast.
+
+Instead of inserting something that is not a toast-kind into the toaster: 
+	say "That would be a pretty bad idea."
+Before inserting a toast-kind into the toaster: 
+	if a toast-kind is in the toaster:
+		say "There is already a piece of toast in the toaster. Another one would not fit into it." instead
+[TODO A two slot toaster would be more realistic... but thats not so important.]
+
+Toast Limbo is a room. Ten toasted pieces of toast are here. Ten charred pieces of toast are here.
+
+The lever is part of the toaster.
+Understand "push down [something]" as pushing.
+Understand "press down [something]" as pushing.
+Instead of pushing the lever:
+	unless the toaster is powered:
+		say "You push the lever down, but it immediately snaps back upwards. ";
+	otherwise:
+		say "The push the lever down and the coils inside the toaster start to glow.";
+		unless a toast-kind is in the toaster:
+			say "A little while later, the lever of the toaster pops up again. If you had put a piece of toast into the toaster before activating it, you would have some tasty toasted piece of toast for breakfast by now.";
+		otherwise:
+			say "A little while later, the lever of the toaster pops up again and so does the piece of toast.";
+			repeat with piece-of-toast-in-toaster running through the toast-kinds which are in the toaster:
+				if the piece-of-toast-in-toaster is an untoasted piece of toast:
+					remove the piece-of-toast-in-toaster from play;
+					let new piece be a random toasted piece of toast in Toast Limbo; 
+					now new piece is in the toaster;
+					say "It has been toasted to a tasty looking light golden brown.";
+				otherwise if the piece-of-toast-in-toaster is a toasted piece of toast:
+					remove the piece-of-toast-in-toaster from play;
+					let new piece be a random charred piece of toast in Toast Limbo; 
+					now new piece is in the toaster;
+					say "Since it had already been toasted before, it is has been charred to an inedible black, hard something now.";
+				otherwise: [toast had been charred before]
+					say "The toast had been charred black even before you put it in the toaster. It seems toasting it again did not make much of a difference - except that there is an unpleasent burnt smell in the kitchen now."
+
+Before eating an untoasted piece of toast:
+	say "It is not toasted yet." instead;
+Before eating a charred piece of toast:
+	say "No way. It has been toasted at least one time too often." instead.
+
+After eating a toasted piece of toast:
+	remove the noun from play;
+	now breakfast state is true;
+	increment toast already eaten;
+	if toast already eaten is 1:
+		say "Dry toast - not exactly a treat. But you do not feel hungry anymore and if nothing else is available, this may count as breakfast.";
+		increase the score by 2;
+	otherwise:
+		say "You're not really hungry anymore but you nibble the toast nonetheless."
+
+[
+TODO Optional: Getting toast immediately after it has been toasted: too hot, toast falls down, thinking about when you cleaned the floor for the last time you throw it away). Get toast after waiting at least once after it is ready is okay (x toast   should reveal how hot it is)
+TODO Optional: find cheese/marmelade in fridge, open marmelade glas, put it on toast
+TODO Optional: After eating and after drinking coffee: If both are true: "After having coffee and breakfast your headache slowly recedes. You don't exactly feel energetic but you think you are as ready for work as you will get today.
+]
+
+[Maybe: You can prepare breakfast but you can not eat it before drinking coffee: "You really need a sip of coffee before eating something. You just don't feel like it yet." - no, rather not. Why should we force the player to solve the puzzles in a particular order. This is bad style.]
+
+Section II/6 - Cutting Things
+
+Understand "cut [something] with [something]" as cutting it with.
+Instead of cutting something:
+	if the player is carrying the knife:
+		say "(with the knife)";
+		try cutting the noun with the knife;
+	otherwise:
+		say "You have nothing to cut it with.".
+
+Cutting it with is an action applying to two things.
+Check cutting it with: 
+    if the noun is a person, say "That would hurt." instead; 
+    if the second noun is not the knife, say "You can't cut things with [the second noun]." instead.
+
+Carry out cutting it with: 
+    do nothing.
+
+Report cutting it with:
+	say "You slash [the noun] with [the second noun]. It doesn't seem to have much effect, though."
+
+Instead of cutting the lamp's power cord with the knife:
+	if the floor lamp's power plug is part of the floor lamp's power cord:
+		say "You cut of the power plug from the power cord of the old lamp.";
+		now the the floor lamp's power plug is in the living room;
+		increase the score by 2;
+	otherwise:
+		say "You already cut the power plug from the power cord, you would achieve nothing by cutting it even more."
+Instead of cutting the floor lamp with the knife:
+	try cutting the floor lamp's power cord with the knife;
+Instead of cutting the floor lamp's power plug with the knife:
+	try cutting the floor lamp's power cord with the knife.
+
+Instead of cutting the toaster's power cord with the knife:
+	say "But that would destroy the toaster! How would you make toast then?"
+Instead of cutting the toaster with the knife:
+	try cutting the toaster's power cord with the knife instead.
+Instead of cutting the coffee machine's power cord with the knife:
+	say "But that would destroy the coffee machine! How would you make coffee then?"
+Instead of cutting the coffee machine with the knife:
+	try cutting the coffee machine's power cord with the knife instead.
+
+Instead of cutting a toast-kind with the knife:
+	say "That would not help much.".
+Instead of cutting a toasted piece of toast with the knife:
+	say "No need to. You could eat it, though.".
+
+Section II/7 - Broken Things And Fixing
+
+A thing is either broken or not broken. A thing is usually not broken.
+
+[tie/attach/connect]
+Understand "connect [something] to [something]" as tying it to.
+
+Instead of tying the power plug to the power supply:
+	if the player carries the power supply and the power plug is part of the power supply:
+		say "It seems you already did that, remember?";
+		stop the action;
+	if the player does not carry the power plug or the player does not carry the power supply:
+		say "For that, you obviously would need to hold both in your hands.";
+		stop the action;
+	now the power plug is part of the power supply; 
+	say "You fumble and and twiddle with the stranded wires but finally manage to connect each of the wires from the power plug to the corresponding wire of the broken power cord of the power supply. Lacking proper tools for the job you just twist them together but it seems to hold well enough for now, if you handle it carefully. Luckily, each wire still has a bit of colored insulation so it's easy to figure out which connections need to be made.";
+	now the power supply is not broken;
+	increase score by 1.
+
+Instead of tying the power supply to the power plug:
+	try tying the power plug to the power supply.
+
+Instead of taking the power plug when power plug is part of the power supply:
+	say "You want do disconnect the wires again? No way."
+
+power-supply-hint-already-given is a truth state that varies.
+To maybe-give-hint-for-power-supply-puzzle:
+	if power-supply-hint-already-given is false and player carries the power supply and player carries the power plug:
+		say "[line break]Hmm... now you have a power supply which misses a power plug and you have a power plug. I wonder if these two can somehow be connected.";
+		now power-supply-hint-already-given is true.
+
+[
+TODO
+- XXX If you cut it while plugged in, you die (that's the only way to die in this game)
+ - XXX attach power plug to the power cord of the power supply. If you fiddle around with the power plug while it is plugged into a wall outlet, you die.
+]
+
+Section II/8 - Laptop In Kitchen
+
+[
+Optional: With laptop and working power supply, you can connect the power cord of the power supply also to the outlet in the kitchen and start the computer. Some funny remark would also be nice (todo). Maybe: "You start to work but after a few minutes you realize that working standing at the kitchen counter is not very convenient. You should really take your stuff to the office room and work there."
+]
+[TODO: Add power on/off switch to laptop and make it work when plugged into outlet in the kitchen.]
+
+[
+TODO
+* Make it possible to connect the laptop to a wall outlet, when the player holds the laptop, the fixed power supply and there is a free outlet. Make some funny remark then, when he switches the laptop on, then.
+]
+
+Section II/9 - Oral Hygiene
+
+The toothbrush and the toothpaste are things.
+The toothpaste is either open or closed.
+The toothpaste is closed.
+Instead of opening the toothpaste:
+	if the toothpaste is closed:
+		now the toothpaste is open;
+		say "You open the toothpaste.";
+	otherwise:
+		say "It's already opened."
+Instead of closing the toothpaste:
+	if the toothpaste is open:
+		now the toothpaste is closed;
+		say "You close the toothpaste.";
+	otherwise:
+		say "It's already closed."
+
+The toothbrush can be either toothpasted or clean.
+The toothbrush is clean.
+The toothpaste can be put on the toothbrush.
+Before putting the toothpaste on the toothbrush:
+	if the toothpaste is not open:
+		try opening the toothpaste;
+	if toothbrush is toothpasted:
+		say "There is already some toothpaste on it.";
+		stop the action.
+Instead of putting the toothpaste on the toothbrush:
+	now the toothbrush is toothpasted;
+	say "You put some toothpaste on the toothbrush."
+
+Toothbrushing is an action applying to nothing.
+A person can be either toothbrushed or foul-mouthed.
+The player is foul-mouthed.
+Understand "brush teeth" as toothbrushing.
+Understand "toothbrush" as toothbrushing.
+Understand "brush my teeth" as toothbrushing.
+Understand "brush your teeth" as toothbrushing.
+Understand "put toothbrush in mouth" as toothbrushing.
+Check toothbrushing:
+	if the toothbrush is not visible:
+		say "You can hardly brush you teeth without a toothbrush, now can you?" instead;
+	if the player is toothbrushed:
+		say "I believe your teeth are as clean as they can get." instead;
+	if the toothbrush is not toothpasted:
+		say "Maybe you should put toothpaste on the toothbrush before." instead.
+Carry out toothbrushing:
+	if the player is foul-mouthed:
+		increase the score by 2;
+	now the player is toothbrushed.
+Report toothbrushing:
+	say "Now your teeth are all shiny.";
+	say "[line break](By the way, this was an optional puzzle. But it's nice to see that you care about oral hygiene. Keep up the good work.)".
+Before toothbrushing:
+	if player is not carrying the toothbrush and the toothbrush is visible:
+		say "(First taking the toothbrush)";
+		try silently taking the toothbrush.
+
+Section II/10 - Rules For Entering The Office
+
+Before going to the Office:
+	if sufficient caffeine saturation is false:
+		say "Start working now?!? You definitely need a coffee first! Otherwise you'll probably fall asleep as soon as you sit down at your desk. You'll better come here again when you are ready to work.";
+		stop the action.
+Before going to the Office:
+	if breakfast state is false:
+		say "You think it's about time to start working? But you didn't even have breakfast. You already feel a little hungry and it will be worse soon. You will not be able to concentrate and do anything useful. Besides, starting to work now and stopping for breakfast in half an hour will only interrupt your flow. You'll better come here again when you are ready to work.";
+		stop the action.
+Before going to the Office:
+	if the player is not carrying the laptop:
+		say "Yes, you should really start working now. Um, but on the other hand, what would you want to do in the office without your laptop, anyway? No use sitting at your desk without the proper equipment. You'll better come here again when you are ready to work.";
+		stop the action.
+Before going to the Office:
+	if the player is not carrying the power supply:
+		say "Yes, you should really start working now. Okay, let's see. You have your laptop, that's fine. But its battery seems to be completely empty so you better search for the power supply first. No use sitting at your desk without the proper equipment. You'll better come here again when you are ready to work.";
+		stop the action.
+Before going to the Office:
+	if the the power supply is broken:
+		say "Yes, you should really start working now. Okay, let's see. You have your laptop and the power supply. But the power supply is still not in a usable state, and the battery of the laptop seems to be completely empty. You need to do something about the broken power supply and the missing power plug before actually starting to work. You'll better come here again when you have taken care of this.";
+		maybe-give-hint-for-power-supply-puzzle;
+		stop the action.
+ 
+ After going to the Office:
+	increase score by 5;
+	say "You enter your office and finally sit down at your desk, plug the power plug (that once belonged to the old floor lamp) into the wall outlet and connect the power supply to your laptop. Your improvised power cord makes gentle frizzling noises now and then but it seems to work. The first thing you do is to order a proper replacement for it online. You feel energetic and start to type away, soon completely immersed in your work.";
+	end the story finally saying "You have won".
+
+Section II/11 - Help
+
+Table of Basic Help Options (continued)
+title	description 
+"Credits"								"Cover art copyright by Moyan Brenn. Go to http://www.flickr.com/aigle_dore to see more of his work."
+"Contacting the Author"	"If you have any difficulties with [story title], please contact me at firstname.lastname@web.de (replace firstname with bastian and lastname with krol)." 
+
+[TODO Check with Moyan Brenn if this is okay. The link is not clickable, as it should be. Maybe that can be put on the website, somehow. Contact him anyway.]
+
+When play begins:
+	choose row 1 in Table of Basic Help Options;
+	now description entry is "
+'Coffee' - the nonofficial XYZ project game
+
+The hardships of working from home: How difficult can it be to get to your desk and start to be productive?
+	
+The story of 'Coffee' takes place in your flat. The goal of this game is quite simple: Get into your home office room and start to work. While this sounds very simple, you will find that there are a number of obstacles in your way.
+
+If you have never played interactive fiction before, you should also check out the section 'Instructions for Play', which gives you a basic introduction to this genre."
+
+Section II/666 - Magic
+
+Understand "xyzzy" or "say xyzzy" or "cast xyzzy" as casting xyzzy. 
+
+Casting xyzzy is an action applying to nothing. 
+
+has-said-xyzzy is a truth state that varies.
+Check casting xyzzy:
+	if has-said-xyzzy is true:
+		say "No, rather not. To be honest, you are quite afraid of what might happen. One time is enough." instead.
+Carry out casting xyzzy:
+	now has-said-xyzzy is true;
+	say "Your vision begins to blur. The electric light starts to flicker and shadows leap across the walls in a wild dance, accompanied by eerie noises. You collapse as a sharp pain manifests itself in your temples. Then, as suddenly as it has come, it is all over.";
+	say "[line break]You find yourself in your office. The laptop is on your desk and you are ready to work.";
+	say paragraph break;
+	say paragraph break;
+	say "   *** You have won ***";
+	say paragraph break;
+	say "In that game you scored [score] out of a possible [maximum score], in [turn count] turns."; 
+	say paragraph break;
+	say "Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?";
+	wait for any key;
+	say paragraph break;
+	say "... and suddenly you wake up. It must have been some kind of daydream. A very vivid one, indeed, but still just a dream. You find yourself lying on your sofa in the living room and you have no idea how you got here. You realize that you still did not get into the office room. At least not in this reality.";
+	now the player is on the sofa.
+	
+
+Chapter 1 - The Game
+
+Section 1/1 - The Bedroom
+
+The Bedroom is a room. "Your bedroom is barely big enough for the bed and a small closet. The air is a bit stuffy in here. Through a small window in the north wall you can see that it's still dark outside, which is to be expected at this early hour. The only exit is south to the living room."
+
+The bed is an enterable supporter that is scenery in the Bedroom. "Unmade, but it still looks inviting. That's probably because you feel so tired[if sufficient caffeine saturation is false]. How you would love to lie down and sleep for another hour. As an alternative, a big cup of hot black coffee might do[otherwise]. On the other hand, after the coffee, the urge to lie down and sleep is not so overwhelming anymore[end if]."
+After entering the bed:
+	say "You lie down and more or less immediately doze off until you are half asleep. You shortly consider to just let go and get some more sleep. But then again, you really have to start working now and get something done.".
+
+[
+TODO Doesn't work correctly - but does not need to be included anyway
+Instead doing something other than getting off when the player is on the bed (this is the get-out-of-bed-first rule):
+	say "You are just too drousy to do anything useful. You'll have to get off the bed first.".
+The get-out-of-bed-first rule is listed first in before.
+TODO: Add examining, looking or taking inventory to list of actions allowed while on bed
+]
+
+The closet is a openable and closed container that is scenery in the bedroom. "Just a closet, where you keep your clothes.[if closet is open] Inside the open closet you can see t-shirts, jeans, a few suits, the usual stuff. Nothing exciting[otherwise] It is closed[end if]."
+Instead of searching the closet:
+	if the closet is open:
+		say "You find nothing unexpected. Just t-shirts, jeans, a few suits, the usual stuff.";
+	otherwise:
+		say "That's a bit difficult, mainly because it is closed."
+
+The bedroom window is a window. It is scenery in the bedroom.
+
+The power supply is hidden under the bed. 
+The power supply is broken.
+Understand "search under [something]" as looking under.
+Instead of searching the bed: try looking under the bed.
+To say find-hidden-under (the bed - a thing):
+    say "Under the bed you discover the power supply of your laptop that you have been missing since the day before yesterday. You knew it had to be somewhere. But somehow it looks weird.".
+The initial appearance of the power supply is "The [if the power supply is broken]broken [otherwise]improvisionally fixed [end if]power supply is lying on the floor." 
+
+The description of the power supply is "The power supply of your laptop. [if the power supply is broken]Or rather, most of it. The plug for the wall outlet is missing and the power cord (which the plug should be attached to) ends in bare wires[end if][if the power supply is not broken]The broken power cord has been fixed, though the fix does not look exactly like the work of a professional[end if]."
+After taking the power supply when the power is not handled:
+	increase the score by 3;
+	say "You crawl halfway under the bed and pull the power supply by the cable. Something is seriously wrong with it. The power cord (which is supposed to connect the unit to the wall outlet) has been ripped in two. The power plug is missing completely. Looks like the dog of your neighbour had some fun with it the last time you watched (or rather, failed to watch) after it, two days ago. It must have used the power supply as a sort of toy when you were inattentive, leaving it under the bed in the end. Luckily, the power supply unit itself and the cable that would connect to your laptop look undamaged.".
+	 [TODO This stuff with the dog needs to be reworked.]
+
+Section 1/2 - The Living Room
+
+The Living Room is a south of the bedroom. "The living room of your tiny, over-priced flat. As untidy as usual. Large windows open to the south and provide a nice view of [city of the player] (or would, if it weren't still dark outside). A door to the north leads back to the bedroom. To the west is the hallway and the kitchen is to the east."
+
+A low table is here. "There is a low table in front of the sofa."
+
+On it is the laptop.
+The description of the laptop is "[if the os of the player is Mac]Your beloved MacBook Pro, sleek and shiny. You can hardly resist to stroke it gently[end if][if the os of the player is Linux]Your laptop, with your current favorite Linux distribution on it. A new alpha version of the kernel was released yesterday and you feel the inexplicable urge to install it right away. O boy, that will be fun. Then you suddenly remember that you have some urgent work to do today. This will have to wait until later[end if][if the os of the player is Windows]Your Windows 7 laptop. Not very sexy, but you're quite used to it[end if]." [TODO The laptop has a power button."]
+[TODO The laptop's power button is part of the laptop.
+Does the player mean doing anything to the laptop's power button: it is very unlikely.]
+
+After taking the laptop:
+	say "You fetch the laptop from the table. You spend yesterday evening and a good part of the night slouching about on the sofa, watching TV without paying attention and at the same time surfing the internet. You don't even remember exactly what pages in particular you were reading, probably meaningless nonsense, as usual. You did so until the battery was sucked empty. Being too lazy to search for the power supply, you finally went to bed[if the power supply is off-stage]. If only you could remember where you put the power supply[otherwise]. At least you have found the power supply by now[end if][if the power supply is on-stage and the power supply is broken], even if it is still broken[end if].";
+	[TODO: Add power on/off switch and make it work when plugged into outlet in the kitchen.]
+	increase the score by 1.
+
+A floor lamp is fixed in place in the living room. "Crammed into one corner is an old floor lamp."
+The description of the floor lamp is "A shabby old thing. You should have thrown it out of your flat ages ago but never got around to do so. Its power plug is not even connected to a wall outlet, so the only purpose it serves is to gather dust on its lamp shade. You have even tripped over the power cord a few times."
+
+The floor lamp's power cord is part of the floor lamp. The description of it is "A black power cord, ending in [if the floor lamp's power plug is part of the floor lamp's power cord]a standard power plug[otherwise]bare wires[end if]."
+The floor lamp's power plug is part of the floor lamp's power cord. The description of it is "[if the floor lamp's power plug is part of the floor lamp's power cord]The power plug is firmly connected to the floor lamp's power cord[otherwise if the floor lamp's power plug is part of the power supply]The power plug is connected to your laptop's power supply[otherwise]The power plug that you have cut from the power cord of the floor lamp. The short cable that comes out of the plug ends in bare wires[end if]."
+[The floor lamp's power plug is a power-plug-kind. TODO This overwrites all descriptions of the power plug (see above)]
+
+The living room window is a window. It is scenery in the living room.
+
+The sofa is an enterable supporter that is scenery in the living room.
+Understand "couch" as sofa.
+
+Section 1/3 - The Kitchen
+
+The Kitchen is east of the Living Room. "The kitchen is very narrow, though quite long. Lined up at the left side is the fridge, the kitchen counter, the sink, the oven and a cupboard. A rather large coffee machine and a toaster nearly fill the small kitchen counter. Behind them you can see a wall outlet. A tiny kitchen table with two chairs is at the north end[if has-made-mess is true]. Coffee has been spilled all over the kitchen counter, but you have no time to clean that up now[end if]. The only exit is west, to the living room."
+
+The sink is scenery in the kitchen. 
+The oven is scenery in the kitchen.
+The fridge is scenery in the kitchen.
+The cupboard is a closed openable container. The cupboard is scenery in the kitchen.
+A knife is in the cupboard. 
+A cup is in the cupboard. 
+
+The kitchen counter is scenery in the kitchen. "Framed by the fridge and the oven, it is barely big enough for the coffee machine and the toaster. You notice a wall outlet behind the coffee machine and the toaster, mounted just above the kitchen counter[if has-made-mess is true]. A lot of coffee has been spilled all around the coffee machine and some is dropping from the kitchen counter to the floor. However, you have no time to clean that up now[end if]."
+
+The wall outlet is a wall-outlet-kind. The wall outlet is scenery. The wall outlet is in the kitchen.
+
+The coffee machine is an electric device. "A quite expensive bean-to-cup coffee brewer. It is probably also capable of making all sorts of coffee specialties like Cappuccino, Espresso, Latte Macchiato, Ristretto and what not. You never got around to read that part in the manual, though. That's why you just stuck with making plain coffee with it. There is a single button on the front. It is labelled with a stylized cup of coffee.  The coffee machine also has a power cord with a power plug."
+The coffee machine is scenery on the kitchen counter.
+
+The toaster is an electric device. "A classically styled chrome toaster. It has a lever on one side that can be pushed to activate the toaster. It also has a power cord with a power plug."
+[TODO Make it a classical styled two slot chrome toaster.]
+The toaster is scenery on the kitchen counter.
+
+[Both electric devices, the coffee machine and the toaster are initially not plugged in. That is by design. Also, there is only one wall outlet for both of them, so the player has to plug in and out a bit.]
+
+Does the player mean doing anything to the coffee machine: it is unlikely.
+Does the player mean doing anything to the coffee machine's button: it is very unlikely.
+Does the player mean doing anything to a power-plug-kind: it is very unlikely.
+Does the player mean doing anything to the coffee machine's power cord: it is very unlikely.
+Does the player mean doing anything to the toaster's power-plug-kind: it is very unlikely.
+
+The kitchen table is scenery in the kitchen.
+
+The pack of toast is a closed, openable, transparent container on the kitchen table. Ten untoasted pieces of toast are in the pack of toast. 
+Does the player mean doing anything to the pack of toast: it is unlikely.
+
+Section 1/4 - The Hallway
+
+The Hallway is west of the Living Room. "A small corridor that is west of the living room. A door to the north leads to the bathroom, the opposite door to the south leads to your home office room. The apartment entrance door is to the west."
+Nirvana is west of the hallway.
+
+Instead of going west from the hallway:
+	say "You can't leave your flat now, not with all the work that you need to do today."
+
+The apartment entrance is scenery in the hallway.
+Understand "door" as apartment entrance.
+
+Instead of opening the apartment entrance:
+	say "You can't leave your flat now, not with all the work that you need to do today."
+
+Section 1/5 - The Bathroom
+
+The Bathroom is north of the Hallway. "The bathroom features a shower, a toilet and a basin. There is a cheap mirror cabinet mounted to the wall above the basin. You can't help admiring the interior design skills that must have been at work to stuff all these things into this extremely tiny room. As a result, a good amount of agility and physical fitness is needed to maneuver here. The only exit is to the south."
+
+The toilet is scenery in the bathroom.
+The shower is scenery in the bathroom.
+The basin is scenery in the bathroom.
+The mirror cabinet is an openable closed container that is scenery in the bathroom.
+The toothbrush and the toothpaste are in the mirror cabinet. The description of the toothpaste is "A tube of Xyzzydent, your favorite brand. [if toothpaste is open]It is open[otherwise]It is closed[end if]." The description of the toothbrush is "A simple toothbrush. People often use toothbrushes to brush their teeth[if toothbrush is toothpasted] There is some toothpaste on it[end if]." 
+Understand "Xyzzydent" as toothpaste.
+
+Section 1/6 - The Office
+
+The Office is south of the Hallway.
+
+
+
+Chapter 2 - Tests - Not for release
+
+Section 2/1 - Inform Tests - Not for release
+
+[TEST SCRIPTS]
+
+[
+Test oob with "out. look under bed."
+Test finish_bare with "go south " in the Hallway.
+Test finish_coffee with "drink coffee / go south " in the Hallway holding the cup.
+Test finish_toast with "drink coffee / eat toast / go south " in the Hallway holding one piece of toast and the cup.
+Test finish_laptop with "drink coffee / eat toast / go south " in the Hallway holding one piece of toast, the cup and the laptop.
+Test  finish_power with "drink coffee / eat toast / go south " in the Hallway holding one piece of toast, the cup, the laptop and the power supply.
+Test  finish_fixing with "drink coffee / eat toast / fix power supply / go south " in the Hallway holding one piece of toast, the cup, the laptop and the power supply.
+
+Test fix with "attach plug to supply" in the Living Room holding the power supply and the power plug.
+
+Test all with "test finish_bare / test finish_coffee / test finish_toast / test finish_laptop / test finish_power / test finish_fixing"
+]
+
+[
+Section 2/2 - Unit Tests - Not for release
+
+[For use with Simple Unit Tests by Dannii Willis]
+
+Unit test (this is the 1 rule):
+	try going south;
+	try getting off the bed;
+	try going west;
+	try going south;
+	assert that the player is in the hallway.
+
+...even something simple as try going south breaks with the Unit Tests extension - this is quite unusable, I think
+]
